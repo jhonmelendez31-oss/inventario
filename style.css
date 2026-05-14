@@ -634,3 +634,38 @@ footer {
     bottom: 14px;
   }
 }
+@media print {
+  header, .panel, footer, .btn-row, #busquedaRapida, #statsRow {
+    display: none !important;
+  }
+  
+  main {
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .panel-title {
+    display: none;
+  }
+
+  #resultado {
+    display: block !important;
+  }
+
+  table {
+    width: 100%;
+    border: 1px solid #000;
+    color: #000; /* Texto negro para ahorrar tinta */
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    color: #000;
+  }
+
+  .plate {
+    color: #000 !important;
+    font-weight: bold;
+  }
+}
