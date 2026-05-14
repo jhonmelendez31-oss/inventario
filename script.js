@@ -442,6 +442,30 @@ function iniciarSistema() {
       }
 
     });
+ // === PERSISTENCIA DE DATOS ===
+function guardarEnLocalStorage() {
+  const backup = {
+    coloresCSS,
+    inventario
+  };
+  localStorage.setItem('inventarioVehicular', JSON.stringify(backup));
+}
 
+function cargarDesdeLocalStorage() {
+  const guardado = localStorage.getItem('inventarioVehicular');
+  if (guardado) {
+    const datos = JSON.parse(guardado);
+    inventario = datos.inventario || datos;
+    if (datos.coloresCSS) coloresCSS = datos.coloresCSS;
+    console.log('✅ Datos cargados desde LocalStorage');
+  }
+}
+  function iniciarSistema() {
+  document.getElementById('hoy').textContent = fechaHoy();
+  
+  cargarDesdeLocalStorage();     // ← Nuevo
+  actualizarContador();
+
+  // ... el resto del código se mantiene igual
   console.log('🚗 Sistema iniciado');
 }
