@@ -1,7 +1,7 @@
 let inventario = {};
 let coloresCSS = {};
 
-fetch('inventario_veicular.json')
+fetch('inventario_vehicular.json')
   .then(response => response.json())
   .then(data => {
 
