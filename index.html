@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Control Vehicular - Rondero</title>
 
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+  <!-- Estilos Externos -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -17,33 +18,30 @@
 
 <header>
   <div class="logo">🚗 Control <span>Vehicular</span></div>
-  <div class="date-badge">Fecha: <b id="hoy"></b></div>
+  <div class="date-badge">📅 <span id="hoy"></span></div>
 </header>
 
 <main>
 
   <!-- BÚSQUEDA RÁPIDA -->
   <div class="panel">
-    <div class="panel-title">🔍 Búsqueda rápida (1 placa)</div>
-
+    <div class="panel-title">🔍 Búsqueda rápida de inventario</div>
+    <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;">Busca por placa para editar o eliminar registros existentes.</p>
+    
     <input
       type="text"
       id="busquedaRapida"
-      placeholder="Escribe una placa (Ej: NAT051)"
-      style="font-size:16px;text-transform:uppercase;"
+      placeholder="Escribe una placa (Ej: ABC123)"
+      style="text-transform:uppercase;"
     >
 
-    <div
-      id="resultadoRapido"
-      style="margin-top:10px;padding:12px;background:var(--surface2);
-      border-radius:6px;display:none;">
-    </div>
+    <!-- Este contenedor se llena dinámicamente desde script.js -->
+    <div id="resultadoRapido" class="search-results-container" style="display:none;"></div>
   </div>
 
-  <!-- AGREGAR NUEVO VEHÍCULO -->
+  <!-- REGISTRAR NUEVO VEHÍCULO -->
   <div class="panel">
-
-    <div class="panel-title">➕ Registrar nuevo vehículo</div>
+    <div class="panel-title">➕ Registrar nuevo vehículo al sistema</div>
 
     <div class="form-grid">
       <input
@@ -61,7 +59,6 @@
     </div>
 
     <div class="form-grid">
-
       <select id="nuevoColor">
         <option value="">-- Seleccionar color --</option>
         <option value="blanco">⚪ Blanco</option>
@@ -74,71 +71,47 @@
         <option value="vino tinto">🍷 Vino tinto</option>
         <option value="amarillo">🟡 Amarillo</option>
       </select>
-
+      
+      <!-- Espacio reservado para balancear el grid o añadir más campos -->
       <div></div>
-
     </div>
 
     <div class="form-full">
       <textarea
         id="nuevosDanos"
-        placeholder="Descripción de daños"
-        style="min-height:80px;">
-      </textarea>
+        placeholder="Descripción detallada de daños encontrados..."
+        style="min-height:100px;"></textarea>
     </div>
 
     <button
       class="btn-primary"
       onclick="agregarVehiculo()"
-      style="width:100%;margin-top:10px;"
+      style="width:100%; margin-top:10px;"
     >
-      💾 Guardar vehículo
+      💾 Guardar en Inventario
     </button>
-
-    <div id="successMsgAdd" class="success-msg"></div>
-
   </div>
 
-  <!-- PLANILLA -->
+  <!-- GENERACIÓN DE PLANILLA -->
   <div class="panel">
-
-    <div class="panel-title">📋 Generar planilla del día</div>
+    <div class="panel-title">📋 Generar reporte del día</div>
+    <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;">Pega la lista de placas (separadas por espacios o enter) para cruzar con el inventario.</p>
 
     <textarea
       id="inputPlacas"
-      placeholder="Pega aquí las placas del día">
-    </textarea>
+      placeholder="Ejemplo:&#10;ABC123&#10;XYZ456&#10;DEF789"
+      style="min-height:120px;"></textarea>
 
-    <div class="btn-row">
-
-      <button class="btn-primary" onclick="buscar()">
-        🔍 Generar Planilla
-      </button>
-
-      <button class="btn-secondary" onclick="copiarTabla()">
-        📋 Copiar tabla
-      </button>
-
-      <button class="btn-secondary" onclick="window.print()">
-        🖨️ Imprimir
-      </button>
-
-      <button class="btn-secondary" onclick="exportarDatos()">
-        💾 Exportar backup
-      </button>
-
-      <button
-        class="btn-secondary"
-        onclick="document.getElementById('importFile').click()">
-        📁 Importar backup
-      </button>
-
-      <button class="btn-danger" onclick="limpiar()">
-        ✕ Limpiar
-      </button>
-
+    <div class="btn-row" style="margin-top: 15px;">
+      <button class="btn-primary" onclick="buscar()">🔍 Generar Planilla</button>
+      <button class="btn-secondary" onclick="copiarTabla()">📋 Copiar Datos</button>
+      <button class="btn-secondary" onclick="window.print()">🖨️ Imprimir</button>
+      <button class="btn-secondary" onclick="exportarDatos()">💾 Exportar Backup</button>
+      <button class="btn-secondary" onclick="document.getElementById('importFile').click()">📁 Importar Backup</button>
+      <button class="btn-danger" onclick="limpiar()">✕ Limpiar Todo</button>
     </div>
 
+    <!-- Input oculto para importación -->
     <input
       type="file"
       id="importFile"
@@ -146,27 +119,31 @@
       style="display:none"
       onchange="importarDatos(event)"
     >
-
   </div>
 
-  <div id="statsRow" class="stats" style="display:none"></div>
+  <!-- ESTADÍSTICAS DE BÚSQUEDA -->
+  <div id="statsRow" class="panel" style="display:none; background: var(--surface2); border-color: var(--accent);">
+    <!-- Se llena dinámicamente -->
+  </div>
 
+  <!-- RESULTADOS DE LA PLANILLA -->
   <div id="resultado">
-
     <div class="empty">
       <div class="empty-icon">🚘</div>
-      <p>Usa la búsqueda rápida o genera la planilla del día</p>
+      <p>No hay datos para mostrar. <br> Ingresa placas en la sección de planilla para comenzar.</p>
     </div>
-
   </div>
 
 </main>
 
 <footer>
-  Control Vehicular · Datos guardados localmente ·
-  <span id="totalVehiculos"></span> vehículos en inventario
+  <div class="footer-content">
+    <p>🛡️ Sistema de Control Vehicular · Seguridad Rondero</p>
+    <p>📊 <span id="totalVehiculos">0</span> vehículos registrados en base de datos local</p>
+  </div>
 </footer>
 
+<!-- Lógica JavaScript -->
 <script src="script.js"></script>
 
 </body>
