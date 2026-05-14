@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Control Vehicular - Rondero</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🚗 Control <span>Vehicular</span></div>
+  <div class="date-badge">Fecha: <b id="hoy"></b></div>
+</header>
+
+<main>
+
+  <!-- BÚSQUEDA RÁPIDA -->
+  <div class="panel">
+    <div class="panel-title">🔍 Búsqueda rápida (1 placa)</div>
+
+    <input
+      type="text"
+      id="busquedaRapida"
+      placeholder="Escribe una placa (Ej: NAT051)"
+      style="font-size:16px;text-transform:uppercase;"
+    >
+
+    <div
+      id="resultadoRapido"
+      style="margin-top:10px;padding:12px;background:var(--surface2);
+      border-radius:6px;display:none;">
+    </div>
+  </div>
+
+  <!-- AGREGAR NUEVO VEHÍCULO -->
+  <div class="panel">
+
+    <div class="panel-title">➕ Registrar nuevo vehículo</div>
+
+    <div class="form-grid">
+      <input
+        type="text"
+        id="nuevaPlaca"
+        placeholder="Placa (Ej: ABC123)"
+        style="text-transform:uppercase;"
+      >
+
+      <input
+        type="text"
+        id="nuevaMarca"
+        placeholder="Marca (Ej: Renault)"
+      >
+    </div>
+
+    <div class="form-grid">
+
+      <select id="nuevoColor">
+        <option value="">-- Seleccionar color --</option>
+        <option value="blanco">⚪ Blanco</option>
+        <option value="negro">⚫ Negro</option>
+        <option value="gris">🔘 Gris</option>
+        <option value="rojo">🔴 Rojo</option>
+        <option value="azul">🔵 Azul</option>
+        <option value="verde">🟢 Verde</option>
+        <option value="café">🟤 Café</option>
+        <option value="vino tinto">🍷 Vino tinto</option>
+        <option value="amarillo">🟡 Amarillo</option>
+      </select>
+
+      <div></div>
+
+    </div>
+
+    <div class="form-full">
+      <textarea
+        id="nuevosDanos"
+        placeholder="Descripción de daños"
+        style="min-height:80px;">
+      </textarea>
+    </div>
+
+    <button
+      class="btn-primary"
+      onclick="agregarVehiculo()"
+      style="width:100%;margin-top:10px;"
+    >
+      💾 Guardar vehículo
+    </button>
+
+    <div id="successMsgAdd" class="success-msg"></div>
+
+  </div>
+
+  <!-- PLANILLA -->
+  <div class="panel">
+
+    <div class="panel-title">📋 Generar planilla del día</div>
+
+    <textarea
+      id="inputPlacas"
+      placeholder="Pega aquí las placas del día">
+    </textarea>
+
+    <div class="btn-row">
+
+      <button class="btn-primary" onclick="buscar()">
+        🔍 Generar Planilla
+      </button>
+
+      <button class="btn-secondary" onclick="copiarTabla()">
+        📋 Copiar tabla
+      </button>
+
+      <button class="btn-secondary" onclick="window.print()">
+        🖨️ Imprimir
+      </button>
+
+      <button class="btn-secondary" onclick="exportarDatos()">
+        💾 Exportar backup
+      </button>
+
+      <button
+        class="btn-secondary"
+        onclick="document.getElementById('importFile').click()">
+        📁 Importar backup
+      </button>
+
+      <button class="btn-danger" onclick="limpiar()">
+        ✕ Limpiar
+      </button>
+
+    </div>
+
+    <input
+      type="file"
+      id="importFile"
+      accept=".json"
+      style="display:none"
+      onchange="importarDatos(event)"
+    >
+
+  </div>
+
+  <div id="statsRow" class="stats" style="display:none"></div>
+
+  <div id="resultado">
+
+    <div class="empty">
+      <div class="empty-icon">🚘</div>
+      <p>Usa la búsqueda rápida o genera la planilla del día</p>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  Control Vehicular · Datos guardados localmente ·
+  <span id="totalVehiculos"></span> vehículos en inventario
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
